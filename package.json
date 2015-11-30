@@ -1,0 +1,24 @@
+{
+  "name": "turnip",
+  "version": "0.0.1",
+  "description": "a publisher/subscribe system based on d3-dispatch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rickotoole <rick@rockerbox.com> (http://rockerbox.com)",
+  "license": "ISC",
+  "scripts": {
+    "pretest": "mkdir -p build && node -e 'process.stdout.write(\"var version = \\\"\" + require(\"./package.json\").version + \"\\\"; export * from \\\"../index\\\"; export {version};\");' > build/bundle.js && rollup -f umd -u turnip -n turnip -o build/turnip.js -- build/bundle.js",
+    "test": "faucet `find test -name '*-test.js'`",
+    "prepublish": "npm run test && uglifyjs build/turnip.js -c -m -o build/turnip.min.js && rm -f build/turnip.zip && zip -j build/turnip.zip -- LICENSE README.md build/turnip.js build/turnip.min.js"
+  },
+  "devDependencies": {
+    "faucet": "0.0",
+    "rollup": "0.20.5",
+    "jsdom": "7",
+    "tape": "4",
+    "uglify-js": "2"
+  }
+
+}
