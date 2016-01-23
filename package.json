@@ -2,7 +2,8 @@
   "name": "turnip",
   "version": "0.0.1",
   "description": "a publisher/subscribe system based on d3-dispatch",
-  "main": "index.js",
+  "main": "build/turnip.js",
+  "jsnext:main": "index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,11 +14,16 @@
     "test": "faucet `find test -name '*-test.js'`",
     "prepublish": "npm run test && uglifyjs build/turnip.js -c -m -o build/turnip.min.js && rm -f build/turnip.zip && zip -j build/turnip.zip -- LICENSE README.md build/turnip.js build/turnip.min.js"
   },
+  "bundledDependencies" : {
+    "d3": "0.0"
+  },
   "devDependencies": {
+    "d3": "3.5.12",
     "faucet": "0.0",
     "rollup": "0.20.5",
     "jsdom": "7",
     "tape": "4",
+    "node-inspector":"0.0",
     "uglify-js": "2"
   }
 

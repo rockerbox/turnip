@@ -1,4 +1,4 @@
-import subscription from "./subscription"
+import subscription_hash from "./subscription"
 
 /**
  * Create subscriber that waits for data from publishers and executes callback
@@ -23,13 +23,9 @@ function subscribe_add(subscriptions,callback,name,trigger,unpersist,data) {
     return cb
   }
 
-  function make_subscription(subscriptions,cb) {
-    return subscription_hash(subscriptions,cb)
-  }
-
 
   var cb = make_callback(name,cb,!unpersist,subscriptions)
-  var subscription = make_subscription(subscriptions,cb)
+  var subscription = subscription_hash(subscriptions,cb)
   var built = pubsub.subscribe_dispatchers(subscriptions,name,subscription.set)
 
   if (trigger) pubsub.run_publishers(subscriptions,data)

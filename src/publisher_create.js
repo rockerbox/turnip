@@ -1,4 +1,5 @@
 import locked_function from "./mutex"
+import create_dispatcher from "./dispatcher_create"
 
 /**
  * Creates a publisher from a `producer` function
@@ -7,26 +8,13 @@ import locked_function from "./mutex"
  */
 function publisher_create(name,producer){
 
-  var pubsub = this
+  var pubsub = this;
 
-  function make_bound_dispatcher(name) {
-
-    pubsub.dispatchers[name] = d3.dispatch(name)  // create dispatcher for pub
-    var event = pubsub.dispatchers[name][name]    // create event for dispatcher
-    var bound = event.bind(subscribe.dispatchers[name],name) // bind event
-
-    return bound
-  }
-
-  function make_locked_producer(request,callback,name) {
-    return locked_function(request,callback,name)
-  }
-
-  var callback  = make_bound_dispatcher(name)
-  var publisher = make_locked_producer(producer,callback,name)
+  var callback  = create_dispatcher.bind(pubsub)(name)
+  var publisher = locked_function(producer.bind(pubsub),callback,name)
 
   // make calling the publisher accesible
-  pubsub.publishers[name] = publisher.call 
+  pubsub.publishers[name] = publisher.call
   pubsub.publisher_raw[name] = publisher
 
 }

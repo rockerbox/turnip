@@ -11,6 +11,7 @@ function locked_function(request, callback, name){
 function LockedFunction(request, callback, name) {
 
   var self = this;
+  var callback = callback;
 
   self.lock = false;
   self.cancelled = false;
@@ -20,7 +21,7 @@ function LockedFunction(request, callback, name) {
   }
 
   self.callback = function(data) {
-    self.lock = false 
+    self.lock = false;
     (!self.cancelled) ? 
       callback(data || true) :
       false
