@@ -1,5 +1,6 @@
 import subscribe_add from './subscribe_add'
 import subscription_hash from './subscription'
+import {subscribe_dispatchers, unsubscribe_dispatchers} from './subscribe_dispatchers'
 
 export function Subscriber(name,subscriptions,system) {
   this.name = name
@@ -32,15 +33,16 @@ function run(fn) {
 
   this.callback = function() {
     fn.apply(self,arguments)
-    if (self.unpersist) self.destroy()
+    if (self._unpersist === true) self.destroy()
   }
 
+  // TODO: move this to another function
   this.subscription = subscription_hash(
     this.subscriptions,
     this.callback
   )
 
-  this._system.subscribe_dispatchers(
+  subscribe_dispatchers.bind(this._system)(
     this.subscriptions,
     this.name,
     this.subscription.set
@@ -53,7 +55,7 @@ function run(fn) {
 
 
 function destroy() {
-  this._system.unsubscribe_dispatchers(this.subscriptions,this.name) 
+  unsubscribe_dispatchers.bind(this._system)(this.subscriptions,this.name) 
 }
 
 function trigger() {
