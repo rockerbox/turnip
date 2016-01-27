@@ -18,7 +18,11 @@ function system(sys) {
 
 function data(bool) {
   if (bool === undefined) return this._data
-  this._data = bool
+  var args = arguments
+  var arr = Object.keys(args).map(function(k){
+    return args[k]
+  })
+  this._data = arguments.length > 1 ? arr : [bool]
   return this
 }
 
@@ -61,7 +65,7 @@ function destroy() {
 function trigger() {
   this._system.run_publishers(
     this.subscriptions,
-    this.data
+    this._data
   )
 }
 
@@ -77,5 +81,7 @@ Subscriber.prototype = {
 function subscriber(name, subscriptions) {
   return new Subscriber(name, subscriptions, this)
 }
+
+subscriber.prototype = Subscriber.prototype
 
 export default subscriber;

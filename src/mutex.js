@@ -30,7 +30,9 @@ function LockedFunction(request, callback, name) {
   self.call = function(data) {
     if (self.lock == false) { 
       self.lock = true
-      self.request = request(self.callback,data)
+      var d = [self.callback].concat(data)
+      
+      self.request = request.apply(self,d)
     }
   }
 

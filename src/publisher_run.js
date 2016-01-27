@@ -8,7 +8,7 @@ function publisher_run(dispatchers,data) {
   var self = this;
 
   dispatchers.map(function(dispatch_name){
-    self.publishers[name](data)
+    self.publishers[dispatch_name](data)
   })
 }
 
