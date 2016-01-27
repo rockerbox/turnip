@@ -166,4 +166,55 @@ test('test system multi-subscription to publishers', function (t) {
 })
 
 
+test('test system persistent subscriber', function (t) {
+  t.plan(3)
 
+  var sys = new s.system()
+
+  var pub = sys.publisher("pub_1")
+    .producer(function(callback,data_1){
+      setTimeout(callback,1,{"data":data_1})
+    })
+
+  var DATA = "asdf"
+
+  var sub = sys.subscriber("sub_1",["pub_1"])
+    .run(function(pub_1_data){
+      t.equal(pub_1_data.data,DATA,"correct data flows through")
+    })
+    .data(DATA)
+
+  sub.trigger()
+  setTimeout(function(){sub.trigger()},1)
+
+  t.equal(1,1)
+  
+
+
+})
+
+test('test system unpersistent subscriber', function (t) {
+  t.plan(2)
+
+  var sys = new s.system()
+
+  var pub = sys.publisher("pub_1")
+    .producer(function(callback,data_1){
+      setTimeout(callback,1,{"data":data_1})
+    })
+
+  var DATA = "asdf"
+
+  var sub = sys.subscriber("sub_1",["pub_1"])
+    .run(function(pub_1_data){
+      t.equal(pub_1_data.data,DATA,"correct data flows through")
+    })
+    .data(DATA)
+    .unpersist(true)
+
+  sub.trigger()
+  setTimeout(function(){sub.trigger()},1)
+
+  t.equal(1,1)
+
+})
