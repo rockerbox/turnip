@@ -27,4 +27,6 @@ function publisher(name) {
   return new Publisher(name, this)
 }
 
+publisher.prototype = Publisher.prototype;
+
 export default publisher;

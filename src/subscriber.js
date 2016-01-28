@@ -1,5 +1,6 @@
 import subscribe_add from './subscribe_add'
 import subscription_hash from './subscription'
+import {subscribe_dispatchers, unsubscribe_dispatchers} from './subscribe_dispatchers'
 
 export function Subscriber(name,subscriptions,system) {
   this.name = name
@@ -17,7 +18,11 @@ function system(sys) {
 
 function data(bool) {
   if (bool === undefined) return this._data
-  this._data = bool
+  var args = arguments
+  var arr = Object.keys(args).map(function(k){
+    return args[k]
+  })
+  this._data = arguments.length > 1 ? arr : [bool]
   return this
 }
 
@@ -32,15 +37,19 @@ function run(fn) {
 
   this.callback = function() {
     fn.apply(self,arguments)
-    if (self.unpersist) self.destroy()
+    if (self._unpersist === true) self.destroy()
   }
 
+  unsubscribe_dispatchers.bind(this._system)(this.subscriptions,this.name) 
+
+
+  // TODO: move this to another function
   this.subscription = subscription_hash(
     this.subscriptions,
     this.callback
   )
 
-  this._system.subscribe_dispatchers(
+  subscribe_dispatchers.bind(this._system)(
     this.subscriptions,
     this.name,
     this.subscription.set
@@ -53,13 +62,13 @@ function run(fn) {
 
 
 function destroy() {
-  this._system.unsubscribe_dispatchers(this.subscriptions,this.name) 
+  unsubscribe_dispatchers.bind(this._system)(this.subscriptions,this.name) 
 }
 
 function trigger() {
   this._system.run_publishers(
     this.subscriptions,
-    this.data
+    this._data
   )
 }
 
@@ -75,5 +84,7 @@ Subscriber.prototype = {
 function subscriber(name, subscriptions) {
   return new Subscriber(name, subscriptions, this)
 }
+
+subscriber.prototype = Subscriber.prototype
 
 export default subscriber;

@@ -3,7 +3,7 @@ import publisher_create from "./publisher_create"
 import publisher_run from "./publisher_run"
 
 import subscribe_add from "./subscribe_add"
-import {subscribe_dispatchers, unsubscribe_dispatchers} from "./subscribe_dispatchers"
+import {dispatch_subscription_name, subscribe_dispatchers, unsubscribe_dispatchers} from "./subscribe_dispatchers"
 
 import publisher from "./publisher"
 import subscriber from "./subscriber"
@@ -19,9 +19,7 @@ pub_sub.prototype.publishers = {}
 pub_sub.prototype.publisher_raw = {}
 
 
-pub_sub.prototype.dispatch_subscription_name = function(dispath_name,subscription_name) {
-  return dispatch_name + "." + subscription_name
-}
+pub_sub.prototype.dispatch_subscription_name = dispatch_subscription_name
 
 pub_sub.prototype.run_publishers = publisher_run
 pub_sub.prototype.create_publisher = publisher_create
