@@ -29,17 +29,13 @@ pubsub.publisher("pub_name_with_data")
 ### Creating Subscriptions
 
 ```
-var subscription = pubsub.subscribe(["x","y"])
-var subscription = pubsub.subscribe("x")
-
-var named_subscription = pubsub.subscribe("x","name")
-var named_subscription = pubsub.subscribe(["x","y"],"name")
+var subscription = pubsub.subscriber("name",["x","y"])
 
 ```
 #### With data
 
 ```
-pubsub.subscribe(["x","y"],"name")
+pubsub.subscriber("name",["x","y"])
   .run(function(x,y){
   	
   })

@@ -11,6 +11,7 @@ function system() {
 
 system.prototype.dispatchers = {}
 system.prototype.publishers = {}
+
 system.prototype.publisher_raw = {}
 
 system.prototype.subscriber = subscriber;

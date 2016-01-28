@@ -40,6 +40,9 @@ function run(fn) {
     if (self._unpersist === true) self.destroy()
   }
 
+  unsubscribe_dispatchers.bind(this._system)(this.subscriptions,this.name) 
+
+
   // TODO: move this to another function
   this.subscription = subscription_hash(
     this.subscriptions,
