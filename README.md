@@ -14,14 +14,14 @@ var pubsub = new PubSubSystem()
 pubsub.publisher("pub_name")
   .producer(function(cb){
 	setTimeout(function(x){
-	  callback({"some":"data"})
+	  cb({"some":"data"})
 	},1000)
   })
 
 pubsub.publisher("pub_name_with_data")
   .producer(function(cb,data){
 	setTimeout(function(x){
-	  callback({"some_transformed":data})
+	  cb({"some_transformed":data})
 	},1000)
   })
 ```
